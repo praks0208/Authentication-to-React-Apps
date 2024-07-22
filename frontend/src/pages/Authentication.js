@@ -1,4 +1,5 @@
 import { json, redirect } from "react-router-dom";
+
 import AuthForm from "../components/AuthForm";
 
 function AuthenticationPage() {
@@ -12,7 +13,7 @@ export async function action({ request }) {
   const mode = searchParams.get("mode") || "login";
 
   if (mode !== "login" && mode !== "signup") {
-    throw json({ message: "Unsupported mode" }, { status: 422 });
+    throw json({ message: "Unsupported mode." }, { status: 422 });
   }
 
   const data = await request.formData();
@@ -29,11 +30,11 @@ export async function action({ request }) {
     body: JSON.stringify(authData),
   });
 
-  if(response.status === 422 || response.status === 401) {
+  if (response.status === 422 || response.status === 401) {
     return response;
   }
 
-  if(!response.ok){
+  if (!response.ok) {
     throw json({ message: "Could not authenticate user." }, { status: 500 });
   }
 
@@ -43,5 +44,4 @@ export async function action({ request }) {
   localStorage.setItem("token", token);
 
   return redirect("/");
-
 }
